@@ -7,9 +7,7 @@ fn main() {
 
     // thread_rng is an rng that is local to the thread and takes a seed from the OS
     // The range is start..=end and is inclusive.
-    let secret_number = rand::thread_rng().gen_range(1..=100);
-
-    println!("The secret number is: {secret_number}");
+    let secret_number = rand::thread_rng().gen_range(1..=5);
 
     loop {
         println!("Please input your guess.");
@@ -33,6 +31,7 @@ fn main() {
         // trim() removes leading and trailing whitespace and newline
         // parse() converts the string type into another type
         // In this case, the type is inferred from the type annotation, ": u32"
+        // We add exception handling wit a match statement. The two arms are the variants of the Result enumeration.
         let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
             Err(inp) => {
@@ -47,8 +46,8 @@ fn main() {
         // The cmp method compares two values. It can be called on anything that can be compared.
         // It returns a variant of Ordering.
         match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
+            Ordering::Less => println!("Too small! Try again."),
+            Ordering::Greater => println!("Too big! Try again."),
             Ordering::Equal => {
                 println!("Correct!");
                 break;
