@@ -33,7 +33,13 @@ fn main() {
         // trim() removes leading and trailing whitespace and newline
         // parse() converts the string type into another type
         // In this case, the type is inferred from the type annotation, ": u32"
-        let guess: u32 = guess.trim().parse().expect("Please input a number.");
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(inp) => {
+                println!("Error: {inp}");
+                continue;
+            }
+        };
 
         println!("You guessed: {guess}");
 
