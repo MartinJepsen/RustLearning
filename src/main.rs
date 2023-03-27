@@ -1,11 +1,15 @@
-use std::io; // imports io into the namespace
+use std::{io, cmp::Ordering}; // imports io into the namespace
 use rand::Rng;
 
 fn main() {
     // main() is the entry point to the programme
     println!("Guess the number!");
 
-    let secret_number = rand::thread_rng().gen_range(1..=100)
+    // thread_rng is an rng that is local to the thread and takes a seed from the OS
+    // The range is start..=end and is inclusive.
+    let secret_number = rand::thread_rng().gen_range(1..=100);
+
+    println!("The secret number is: {secret_number}");
 
     println!("Please input your guess.");
     
@@ -25,4 +29,13 @@ fn main() {
         .expect("Failed to read line");
 
     println!("You guessed: {guess}");
+
+    // The Ordering type is an enum and hass variants Less, Greater and Equals.
+    // The cmp method compares two values. It can be called on anything that can be compared.
+    // It returns a variant of Ordering.
+    match guess.cmp(&secret_number) {
+        Ordering::Less => println!("Too small!"),
+        Ordering::Greater => println!("Too big!"),
+        Ordering::Equal => println!("Correct!"),
+    }
 }
