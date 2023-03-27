@@ -11,31 +11,42 @@ fn main() {
 
     println!("The secret number is: {secret_number}");
 
-    println!("Please input your guess.");
-    
-    // let mut creates a mutable variable
-    // String::new() creates a new Sting instance, which is a growable piece of text.
-    // The ::new syntax means that new() is an associated function of the String type.
-    // An associated function is a function that is implemented on a type.
-    let mut guess = String::new();
+    loop {
+        println!("Please input your guess.");
+        
+        // let mut creates a mutable variable
+        // String::new() creates a new Sting instance, which is a growable piece of text.
+        // The ::new syntax means that new() is an associated function of the String type.
+        // An associated function is a function that is implemented on a type.
+        let mut guess = String::new();
 
-    // read_line(&mut guess) means that we store the user input in the guess variable
-    // The & indicates a reference. This lets multiple parts of the programme access the same data without having to copy it.
-    // The .expect function tells the programme what to do if we get an exception.
-    // This is because read_line returns Result which is an enum. This enum has either the user input or an error
-    // and .expect handles this error.
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");
+        // read_line(&mut guess) means that we store the user input in the guess variable
+        // The & indicates a reference. This lets multiple parts of the programme access the same data without having to copy it.
+        // The .expect function tells the programme what to do if we get an exception.
+        // This is because read_line returns Result which is an enum. This enum has either the user input or an error
+        // and .expect handles this error.
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
 
-    println!("You guessed: {guess}");
+        // Rust allows variable shadowing
+        // trim() removes leading and trailing whitespace and newline
+        // parse() converts the string type into another type
+        // In this case, the type is inferred from the type annotation, ": u32"
+        let guess: u32 = guess.trim().parse().expect("Please input a number.");
 
-    // The Ordering type is an enum and hass variants Less, Greater and Equals.
-    // The cmp method compares two values. It can be called on anything that can be compared.
-    // It returns a variant of Ordering.
-    match guess.cmp(&secret_number) {
-        Ordering::Less => println!("Too small!"),
-        Ordering::Greater => println!("Too big!"),
-        Ordering::Equal => println!("Correct!"),
+        println!("You guessed: {guess}");
+
+        // The Ordering type is an enum and hass variants Less, Greater and Equals.
+        // The cmp method compares two values. It can be called on anything that can be compared.
+        // It returns a variant of Ordering.
+        match guess.cmp(&secret_number) {
+            Ordering::Less => println!("Too small!"),
+            Ordering::Greater => println!("Too big!"),
+            Ordering::Equal => {
+                println!("Correct!");
+                break;
+            }
+        }
     }
 }
